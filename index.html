@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#173954">
+  <meta name="description" content="Time Travel Tracker by Buildiful® — keep a personal flight log and see how departure and arrival local clocks compare across timezones.">
+  <title>Time Travel Tracker by Buildiful®</title>
+  <link rel="icon" href="./assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./js/buildiful-analytics.js"
+    data-measurement-id="G-TG14RBXLTF"
+    data-tool-name="Time Travel Tracker"
+    data-privacy-url="./privacy.html"
+    data-events="flight_added,flight_removed,project_saved,project_opened,log_cleared,music_enabled"></script>
+  <script defer src="./js/airports.js"></script>
+  <script defer src="./js/time.js"></script>
+  <script defer src="./js/app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-inner">
+        <a class="brand" href="https://buildiful.com/" aria-label="Buildiful® website">
+          <img src="./assets/buildiful-logo-white.png" alt="Buildiful®">
+        </a>
+        <span class="divider" aria-hidden="true"></span>
+        <a class="tool-name" href="https://buildiful.github.io/time-travel-tracker/" aria-current="page">Time Travel Tracker</a>
+      </div>
+    </header>
+
+    <main class="main tracker-main">
+      <section class="overview" aria-labelledby="overviewHeading">
+        <div class="overview-top">
+          <div>
+            <p class="eyebrow">YOUR FLIGHT LOG</p>
+            <h1 id="overviewHeading">The time you’ve traveled.</h1>
+          </div>
+          <div class="audio-controls" aria-label="Audio controls">
+            <button class="audio-button" type="button" id="musicToggle" aria-pressed="false" title="Play original four-minute upbeat instrumental music">♫ Music off</button>
+            <button class="audio-button" type="button" id="sfxToggle" aria-pressed="true" title="Toggle sound effects">♪ Sounds on</button>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-primary">
+            <div class="stat-primary-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="24" stroke="currentColor" stroke-width="2.7"/><path d="M32 17v16l11 8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M12 12l-3 10 10-3M52 52l3-10-10 3" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 20c4-7 9-10 18-12M52 44c-4 7-9 10-18 12" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/></svg>
+            </div>
+            <p class="stat-label">LIFETIME TIME TRAVELED</p>
+            <div class="stat-total" id="totalTime" aria-live="polite">0d 00h 00m</div>
+            <p class="stat-footnote"><strong id="flightCount">0</strong> flights counted</p>
+          </div>
+          <div class="stat-side">
+            <div class="mini-stat mini-backward"><span class="mini-icon" aria-hidden="true">↶</span><div><p class="stat-label">BACK IN TIME</p><strong id="backTime">0d 00h 00m</strong></div></div>
+            <div class="mini-stat mini-forward"><span class="mini-icon" aria-hidden="true">↷</span><div><p class="stat-label">FORWARD IN TIME</p><strong id="forwardTime">0d 00h 00m</strong></div></div>
+            <div class="mini-stat mini-net"><span class="mini-icon" aria-hidden="true">↔</span><div><p class="stat-label">NET CLOCK CHANGE</p><strong id="netTime">0d 00h 00m</strong><span class="net-direction" id="netDirection">Even</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="log-section" aria-labelledby="flightsHeading">
+        <div class="log-header">
+          <div>
+            <h2 id="flightsHeading">Your flights <span id="entryCount" class="entry-count">02</span></h2>
+            <p class="save-status" id="saveStatus" role="status">Saved in this browser</p>
+          </div>
+          <div class="log-actions">
+            <button class="button-secondary" id="openProject" type="button"><span aria-hidden="true">↥</span> Open project</button>
+            <button class="button-secondary" id="saveProject" type="button"><span aria-hidden="true">↧</span> Save project</button>
+            <button class="button-primary" id="addFlight" type="button"><span aria-hidden="true">＋</span> Add flight</button>
+          </div>
+        </div>
+        <div id="flightList" class="flight-list" aria-live="off"></div>
+        <div class="log-bottom">
+          <button class="button-secondary add-more" id="addFlightBottom" type="button">＋ Add another flight</button>
+          <button class="button-quiet" id="clearAll" type="button">Clear all</button>
+        </div>
+      </section>
+      <p class="calculation-note"><span aria-hidden="true">ⓘ</span> Time traveled = arrival local date and time minus departure local date and time. No timezone adjustment. <button type="button" class="text-link" id="showMethod">How it works</button></p>
+      <div class="method" id="methodDetails" hidden>
+        <p>For each cross-timezone flight, the tracker subtracts the departure local calendar date and clock time from the arrival local date and clock time, without applying a timezone offset. A negative result is backward; a positive result is forward. The lifetime total adds the absolute results, and net is forward minus backward. Timezones and daylight saving rules are used only to verify actual flight duration and cross-timezone eligibility.</p>
+        <p>Example: HKG on December 25 at 06:00 to SFO on December 25 at 02:00 is 4 hours back on the local clocks. The actual flight took 12 hours, but the clock result stays −4 hours. When daylight saving makes a clock time repeat, choose the correct occurrence. This is a personal log, not a flight schedule verifier.</p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <span>Built by <a href="https://buildiful.com/">Buildiful®</a></span>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="https://buildiful.github.io/">More Tools</a>
+          <a href="./privacy.html">Privacy</a>
+          <span>v1.0.0</span>
+        </nav>
+      </div>
+    </footer>
+  </div>
+  <datalist id="airportSuggestions"></datalist>
+  <input id="projectFile" type="file" accept=".json,application/json" hidden aria-label="Choose a Time Travel Tracker project file">
+  <audio id="bgMusic" src="./assets/audio/sunny-skies.mp3" loop preload="none"></audio>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="analyticsConsentRoot"></div>
+</body>
+</html>

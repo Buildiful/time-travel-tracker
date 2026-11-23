@@ -1,0 +1,4 @@
+Sunny Skies — original four-minute upbeat instrumental soundtrack for Time Travel Tracker.
+Copyright waived and dedicated to the public domain under CC0 1.0.
+https://creativecommons.org/publicdomain/zero/1.0/
+Generated locally from the composition in scripts/render_music.py.
